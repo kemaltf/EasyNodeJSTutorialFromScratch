@@ -1,0 +1,39 @@
+{
+  "students": [
+    {
+      "name": "Bob",
+      "class": "2",
+      "id": "wj-WRQYKs"
+    },
+    {
+      "title": "John",
+      "author": "3",
+      "id": "mdceiLl9X"
+    },
+    {
+      "name": "Sizuka",
+      "class": "3",
+      "id": "NNGfMM66y"
+    },
+    {
+      "name": "Sasuke",
+      "class": "3",
+      "id": "56EcrY10Y"
+    },
+    {
+      "name": "naruto",
+      "class": "3",
+      "id": "o48QrivTP"
+    },
+    {
+      "name": "Sakura",
+      "class": "3",
+      "id": "ac77qPDMw"
+    },
+    {
+      "name": "Tsunade",
+      "class": "3",
+      "id": "K816GVCLx"
+    }
+  ]
+}
