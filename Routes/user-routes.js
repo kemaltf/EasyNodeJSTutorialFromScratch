@@ -1,5 +1,6 @@
 import express from "express";
 import shortid from "shortid";
+import bcrypt from "bcryptjs";
 const router = express.Router();
 
 //buat user
@@ -7,6 +8,9 @@ router.route("/register").post(async (req, res) => {
   const credentials = req.body;
   credentials.id = shortid.generate();
   const { username, password } = credentials;
+
+  const hash = await bcrypt.hash(credentials.password, 12);
+  credentials.password = hash;
   if (!(username && password)) {
     return res.status(400).json({ message: "Username and password required!" });
   }
@@ -29,11 +33,36 @@ router.route("/register").post(async (req, res) => {
       },
       body: JSON.stringify(credentials),
     });
-    const responseData = await response.json();
     res.status(200).json({ message: "Username added!" });
   } catch (err) {
-    res.status(500).json({ message: "internal server error" });
+    return res.status(500).json({ message: "internal server error" });
   }
 });
 
+router.route("/login").post(async (req, res) => {
+  const { username, password } = req.body;
+  if (!(username && password)) {
+    return res.status(400).json({ message: "Username and password required!" });
+  }
+  try {
+    const response = await fetch(
+      `http://localhost:4000/users?username=${username}`
+    );
+    const data = await response.json();
+    const user = data[0];
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid username or password" });
+    }
+
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (isPasswordMatch) {
+      return res.status(200).json({ message: `welcome ${user.username}` });
+    } else {
+      return res.status(400).json({ message: "Invalid username or password" });
+    }
+  } catch (err) {
+    return res.status(400).json(err);
+  }
+});
 export default router;
