@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import restricted from "../auth/restricted-middleware.js";
 dotenv.config();
 
 //setup routes
@@ -12,7 +13,7 @@ const server = express();
 server.use(express.json());
 
 server.use("/auth", authRouter);
-server.use("/students", studentsRouter);
-server.use("/users", usersRouter);
+server.use("/students", restricted, studentsRouter);
+server.use("/users", restricted, usersRouter);
 
 export default server;

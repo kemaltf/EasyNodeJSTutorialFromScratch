@@ -1,6 +1,7 @@
 import express from "express";
 import shortid from "shortid";
 import bcrypt from "bcryptjs";
+import generateToken from "./generateToken.js";
 const router = express.Router();
 
 //buat user
@@ -57,7 +58,10 @@ router.route("/login").post(async (req, res) => {
 
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (isPasswordMatch) {
-      return res.status(200).json({ message: `welcome ${user.username}` });
+      const token = generateToken(user);
+      return res
+        .status(200)
+        .json({ message: `welcome ${user.username}`, token });
     } else {
       return res.status(400).json({ message: "Invalid username or password" });
     }
